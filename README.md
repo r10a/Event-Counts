@@ -30,5 +30,6 @@ Waiter:
     make_condition_true();
     eventCount.notifyAll();    
 ```
+Compile with `-DPSHARED` flag for use across multiple processes.
 
 Build using `cmake` and run the demo program from `main.cpp`
