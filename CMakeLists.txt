@@ -5,6 +5,9 @@ set(CMAKE_CXX_STANDARD 14)
 
 include_directories (${CMAKE_SOURCE_DIR}/include)
 
+# Uncomment for multiprocess
+# set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DPSHARED")
+
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++11 -O3 -Wall -Wextra -Wno-unused-parameter -ggdb -g -lpthread")
 
 aux_source_directory (${CMAKE_CURRENT_SOURCE_DIR} SRCS)
