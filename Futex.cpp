@@ -10,6 +10,7 @@
 using namespace std::chrono;
 
 int nativeFutexWake(const void *addr, int count, uint32_t wakeMask) {
+#ifndef PSHARED
     int rv = syscall(
             __NR_futex,
             addr, /* addr1 */
@@ -18,6 +19,16 @@ int nativeFutexWake(const void *addr, int count, uint32_t wakeMask) {
             nullptr, /* timeout */
             nullptr, /* addr2 */
             wakeMask); /* val3 */
+#else
+    int rv = syscall(
+                __NR_futex,
+                addr, /* addr1 */
+                FUTEX_WAKE_BITSET, /* op */
+                count, /* val */
+                nullptr, /* timeout */
+                nullptr, /* addr2 */
+                wakeMask); /* val3 */
+#endif
 
     /* NOTE: we ignore errors on wake for the case of a futex
        guarding its own destruction, similar to this
@@ -57,7 +68,11 @@ FutexResult nativeFutexWaitImpl(
         uint32_t waitMask) {
     assert(absSystemTime == nullptr || absSteadyTime == nullptr);
 
+#ifndef PSHARED
     int op = FUTEX_WAIT_BITSET | FUTEX_PRIVATE_FLAG;
+#else
+    int op = FUTEX_WAIT_BITSET;
+#endif
     struct timespec ts;
     struct timespec *timeout = nullptr;
 
