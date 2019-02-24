@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <unistd.h>
 
-#include "EvenCount.hpp"
+#include "EventCount.hpp"
 
 void waiter(EventCount *eventCount) {
     for (int i = 0; i < 100; i++) {
